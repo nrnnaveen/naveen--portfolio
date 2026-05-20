@@ -1,0 +1,41 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+::-webkit-scrollbar-thumb { background: rgba(0,255,247,0.3); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,255,247,0.6); }
+
+* { scrollbar-width: thin; scrollbar-color: rgba(0,255,247,0.3) transparent; }
+
+::selection { background: rgba(0,255,247,0.2); color: #00fff7; }
+
+@keyframes fadeInLine {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulseAvatar {
+  0%,100% { box-shadow: 0 0 40px rgba(0,255,247,0.5), 0 0 80px rgba(191,0,255,0.3); }
+  50%     { box-shadow: 0 0 60px rgba(0,255,247,0.7), 0 0 120px rgba(191,0,255,0.5); }
+}
+@keyframes fpPulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%     { opacity: 0.6; transform: scale(0.95); }
+}
+@keyframes floatOrb {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(20px, 30px); }
+}
+@keyframes blink {
+  0%,100% { opacity: 1; } 50% { opacity: 0.3; }
+}
+@keyframes bounce {
+  0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); }
+}
