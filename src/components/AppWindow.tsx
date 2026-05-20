@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, ReactNode } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import type { CSSProperties, MouseEvent as ReactMouseEvent, ReactNode } from 'react'
 
 interface Props {
   id: string
@@ -19,7 +20,7 @@ export function AppWindow({ id, title, icon, color, children, onClose, onMinimiz
   const dragging = useRef(false)
   const dragStart = useRef({ x:0, y:0, px:0, py:0 })
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = (e: ReactMouseEvent) => {
     if ((e.target as HTMLElement).closest('.window-controls')) return
     onFocus()
     dragging.current = true
@@ -41,7 +42,7 @@ export function AppWindow({ id, title, icon, color, children, onClose, onMinimiz
     return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
   }, [])
 
-  const wStyle: React.CSSProperties = maximized
+  const wStyle: CSSProperties = maximized
     ? { position:'fixed', top:'30px', left:0, right:0, bottom:0, zIndex, width:'100vw', height:'calc(100vh - 30px)' }
     : { position:'fixed', left:pos.x, top:pos.y, width:680, height:460, zIndex }
 
