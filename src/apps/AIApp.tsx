@@ -11,6 +11,17 @@ GitHub: ${NAVEEN.github} | LinkedIn: ${NAVEEN.linkedin}
 Keep answers to 2-3 sentences. Be friendly and professional.`
 
 type Msg = { role: 'user' | 'ai'; text: string }
+type AnthropicContentBlock = { text?: string }
+type AnthropicResponse = {
+  content?: AnthropicContentBlock[]
+  error?: { message?: string }
+}
+
+const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages'
+const ANTHROPIC_MODEL = import.meta.env.VITE_ANTHROPIC_MODEL || 'claude-sonnet-4-20250514'
+const ANTHROPIC_API_KEY = import.meta.env.VITE_ANTHROPIC_API_KEY
+const AI_ENABLED = Boolean(ANTHROPIC_API_KEY)
+const AI_DISABLED_MESSAGE = 'AI assistant setup required. Add VITE_ANTHROPIC_API_KEY in your environment to enable live responses.'
 
 export function AIApp() {
   const [messages, setMessages] = useState<Msg[]>([{ role:'ai', text:"Hello! I'm NAVI — Naveen's AI assistant. Ask me anything about Naveen, his projects, skills, or how to get in touch!" }])
@@ -22,22 +33,37 @@ export function AIApp() {
   const send = async () => {
     if (!input.trim() || loading) return
     const userMsg = input.trim()
+    const apiKey = ANTHROPIC_API_KEY
     setInput('')
     setMessages(m => [...m, { role:'user', text:userMsg }])
+    if (!apiKey) {
+      setMessages(m => [...m, { role:'ai', text:AI_DISABLED_MESSAGE }])
+      return
+    }
     setLoading(true)
     try {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      const resp = await fetch(ANTHROPIC_API_URL, {
         method:'POST',
-        headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:300, system:SYSTEM, messages:[{ role:'user', content:userMsg }] }),
+        headers:{
+          'Content-Type':'application/json',
+          'anthropic-dangerous-direct-browser-access':'true',
+          'anthropic-version':'2023-06-01',
+          'x-api-key': apiKey,
+        },
+        body: JSON.stringify({ model:ANTHROPIC_MODEL, max_tokens:300, system:SYSTEM, messages:[{ role:'user', content:userMsg }] }),
       })
-      const data = await resp.json()
-      const text = data.content?.map((c: { text?: string }) => c.text || '').join('') || 'Sorry, could not process that.'
+      const data = await resp.json() as AnthropicResponse
+      if (!resp.ok) {
+        throw new Error(data.error?.message || `Anthropic request failed with status ${resp.status}.`)
+      }
+      const text = data.content?.map(c => c.text || '').join('').trim() || 'Sorry, could not process that.'
       setMessages(m => [...m, { role:'ai', text }])
-    } catch {
-      setMessages(m => [...m, { role:'ai', text:'Connection error. Please try again.' }])
+    } catch (error) {
+      const text = error instanceof Error ? error.message : 'Connection error. Please try again.'
+      setMessages(m => [...m, { role:'ai', text }])
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const quick = ['Tell me about Naveen', 'What projects has he built?', 'What are his skills?', 'How can I contact him?']
@@ -52,11 +78,16 @@ export function AIApp() {
             <div style={{ color:'#ff0080', fontSize:'9px', letterSpacing:'2px' }}>NAVEEN'S AI ASSISTANT</div>
           </div>
           <div style={{ marginLeft:'auto', display:'flex', alignItems:'center', gap:'4px' }}>
-            <div style={{ width:'6px', height:'6px', borderRadius:'50%', background:'#00ff88', animation:'blink 1s infinite' }} />
-            <span style={{ color:'#00ff88', fontSize:'10px' }}>ONLINE</span>
+            <div style={{ width:'6px', height:'6px', borderRadius:'50%', background:AI_ENABLED ? '#00ff88' : '#ffcc00', animation:'blink 1s infinite' }} />
+            <span style={{ color:AI_ENABLED ? '#00ff88' : '#ffcc00', fontSize:'10px' }}>{AI_ENABLED ? 'ONLINE' : 'SETUP'}</span>
           </div>
         </div>
       </div>
+      {!AI_ENABLED && (
+        <div style={{ margin:'12px 16px 0', padding:'10px 12px', borderRadius:'8px', background:'rgba(255,204,0,0.08)', border:'1px solid rgba(255,204,0,0.24)', color:'#ffcc00', fontSize:'11px', lineHeight:'1.5' }}>
+          {AI_DISABLED_MESSAGE}
+        </div>
+      )}
       <div style={{ flex:1, overflow:'auto', padding:'16px', display:'flex', flexDirection:'column', gap:'12px' }}>
         {messages.map((m, i) => (
           <div key={i} style={{ display:'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>

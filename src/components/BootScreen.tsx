@@ -30,7 +30,7 @@ export function BootScreen({ onDone }: Props) {
     let i = 0
     const id = setInterval(() => {
       if (i < BOOT_LINES.length) {
-        setLines(l => [...l, BOOT_LINES[i]])
+        setLines(l => [...l, BOOT_LINES[i] ?? ''])
         setProgress(Math.round(((i + 1) / BOOT_LINES.length) * 100))
         i++
       } else {
@@ -62,13 +62,16 @@ export function BootScreen({ onDone }: Props) {
         </div>
       </div>
       <div style={{ width:'100%', maxWidth:'700px' }}>
-        {lines.map((l, i) => (
+        {lines.map((l, i) => {
+          const line = l || ''
+          return (
           <div key={i} style={{
-            color: l.includes('✓') ? '#00ff88' : l.includes('NAVEEN') ? '#00fff7' : '#4ade80',
+            color: line.includes('✓') ? '#00ff88' : line.includes('NAVEEN') ? '#00fff7' : '#4ade80',
             fontSize:'12px', lineHeight:'1.7',
             opacity:0, animation:`fadeInLine 0.1s ease ${i * 0.05}s forwards`,
-          }}>{l}</div>
-        ))}
+          }}>{line}</div>
+          )
+        })}
       </div>
       <div style={{ marginTop:'32px', width:'100%', maxWidth:'700px' }}>
         <div style={{ color:'#666', fontSize:'11px', marginBottom:'6px' }}>Loading... {progress}%</div>

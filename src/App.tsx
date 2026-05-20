@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import type { ComponentType } from 'react'
 import { BootScreen }    from './components/BootScreen'
 import { LoginScreen }   from './components/LoginScreen'
 import { Wallpaper }     from './components/Wallpaper'
@@ -22,7 +23,7 @@ import { GitHubApp }   from './apps/GitHubApp'
 import { SysMonApp }   from './apps/SysMonApp'
 import { SettingsApp } from './apps/SettingsApp'
 
-const APP_MAP: Record<string, { title:string; icon:string; color:string; Component: React.ComponentType; pos:{x:number;y:number} }> = {
+const APP_MAP: Record<string, { title:string; icon:string; color:string; Component: ComponentType; pos:{x:number;y:number} }> = {
   about:    { title:'About Me',             icon:'◉', color:'#00fff7', Component:AboutApp,    pos:{x:80,y:50} },
   projects: { title:'Projects Explorer',    icon:'⬡', color:'#bf00ff', Component:ProjectsApp, pos:{x:120,y:60} },
   terminal: { title:'Terminal',             icon:'⬛', color:'#00ff88', Component:TerminalApp, pos:{x:160,y:80} },

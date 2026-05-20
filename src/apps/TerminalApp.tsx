@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import type { JSX, KeyboardEvent } from 'react'
 import { NAVEEN } from '../data'
 
 const NEOFETCH = `
@@ -90,7 +91,7 @@ export function TerminalApp() {
     setHistory(h => [...h, { type:'input', text:cmd }, { type:'output', text:out }])
   }
 
-  const handleKey = (e: React.KeyboardEvent) => {
+  const handleKey = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') { run(input); setInput('') }
     else if (e.key === 'ArrowUp') { const i = Math.min(histIdx+1,cmdHistory.length-1); setHistIdx(i); setInput(cmdHistory[i]||'') }
     else if (e.key === 'ArrowDown') { const i = Math.max(histIdx-1,-1); setHistIdx(i); setInput(i===-1?'':cmdHistory[i]||'') }
