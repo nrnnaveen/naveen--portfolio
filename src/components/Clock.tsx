@@ -6,7 +6,7 @@ export function Clock() {
   useInterval(() => setT(new Date()), 1000)
   const p = (n: number) => String(n).padStart(2, '0')
   return (
-    <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:'12px', color:'#00fff7', letterSpacing:'1px' }}>
+    <span style={{ fontFamily:"'Liberation Mono',monospace", fontSize:'11px', color:'#ccc', letterSpacing:'0.5px' }}>
       {p(t.getHours())}:{p(t.getMinutes())}:{p(t.getSeconds())}
     </span>
   )
