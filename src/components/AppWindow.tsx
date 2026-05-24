@@ -43,41 +43,42 @@ export function AppWindow({ id, title, icon, color, children, onClose, onMinimiz
   }, [])
 
   const wStyle: CSSProperties = maximized
-    ? { position:'fixed', top:'30px', left:0, right:0, bottom:0, zIndex, width:'100vw', height:'calc(100vh - 30px)' }
+    ? { position:'fixed', top:'28px', left:0, right:0, bottom:0, zIndex, width:'100vw', height:'calc(100vh - 28px)' }
     : { position:'fixed', left:pos.x, top:pos.y, width:680, height:460, zIndex }
 
   const controls = [
-    { c:'#ff5f57', action: onClose, label:'×' },
-    { c:'#ffbd2e', action: () => onMinimize(id), label:'−' },
-    { c:'#28c840', action: () => setMaximized(m => !m), label: maximized ? '❐' : '□' },
+    { c:'#d75d60', action: onClose, label:'✕' },
+    { c:'#daa520', action: () => onMinimize(id), label:'_' },
+    { c:'#60a063', action: () => setMaximized(m => !m), label: maximized ? '❐' : '□' },
   ]
 
   return (
     <div onMouseDown={() => onFocus()} style={{
       ...wStyle,
-      background:'rgba(8,8,20,0.92)', backdropFilter:'blur(30px)',
-      border:`1px solid ${color}33`, borderRadius: maximized ? '0' : '12px',
-      boxShadow:`0 20px 60px rgba(0,0,0,0.8),0 0 30px ${color}11,inset 0 1px 0 rgba(255,255,255,0.05)`,
+      background:'#2a2a2a',
+      border:'1px solid #444', borderRadius: maximized ? '0' : '4px',
+      boxShadow:'0 4px 12px rgba(0,0,0,0.8)',
       display:'flex', flexDirection:'column', overflow:'hidden',
+      fontFamily:"'Liberation Mono',monospace",
     }}>
       <div onMouseDown={handleMouseDown} style={{
-        height:'36px',
-        background:`rgba(0,0,0,0.6)`,
-        borderBottom:`1px solid ${color}22`,
+        height:'28px',
+        background:'#3a3a3a',
+        borderBottom:'1px solid #444',
         display:'flex', alignItems:'center', justifyContent:'space-between',
-        padding:'0 12px', cursor:'move', userSelect:'none', flexShrink:0,
+        padding:'0 10px', cursor:'move', userSelect:'none', flexShrink:0,
       }}>
-        <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
-          <span style={{ color, fontSize:'14px' }}>{icon}</span>
-          <span style={{ color:'#ccc', fontSize:'12px', fontFamily:"'JetBrains Mono',monospace", letterSpacing:'0.5px' }}>{title}</span>
+        <div style={{ display:'flex', alignItems:'center', gap:'6px' }}>
+          <span style={{ color:'#0088ff', fontSize:'12px' }}>{icon}</span>
+          <span style={{ color:'#ccc', fontSize:'11px' }}>{title}</span>
         </div>
-        <div className="window-controls" style={{ display:'flex', gap:'6px' }}>
+        <div className="window-controls" style={{ display:'flex', gap:'4px' }}>
           {controls.map((b, i) => (
             <button key={i} onClick={b.action} style={{
-              width:'14px', height:'14px', borderRadius:'50%',
+              width:'12px', height:'12px', borderRadius:'50%',
               background:b.c, border:'none', cursor:'pointer',
               display:'flex', alignItems:'center', justifyContent:'center',
-              fontSize:'9px', color:'rgba(0,0,0,0.6)', fontWeight:'bold',
+              fontSize:'8px', color:'#000', fontWeight:'bold',
             }}>{b.label}</button>
           ))}
         </div>

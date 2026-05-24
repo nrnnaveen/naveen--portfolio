@@ -6,15 +6,15 @@ interface Props {
 }
 
 const MENU_ITEMS = [
-  { id:'about', label:'About Me', icon:'◉', color:'#00fff7' },
-  { id:'projects', label:'Projects Explorer', icon:'⬡', color:'#bf00ff' },
-  { id:'terminal', label:'Open Terminal', icon:'⬛', color:'#00ff88' },
-  { id:'skills', label:'Skills Dashboard', icon:'◈', color:'#ff6b35' },
-  { id:'resume', label:'Resume Viewer', icon:'☰', color:'#00c8ff' },
-  { id:'ai', label:'Launch AI Assistant', icon:'◎', color:'#ff0080' },
-  { id:'contact', label:'Contact', icon:'✉', color:'#ffcc00' },
-  { id:'github', label:'GitHub Dashboard', icon:'⌬', color:'#888' },
-  { id:'settings', label:'Settings', icon:'⚙', color:'#aaa' },
+  { id:'about', label:'About Me', icon:'◉' },
+  { id:'projects', label:'Projects Explorer', icon:'⬡' },
+  { id:'terminal', label:'Open Terminal', icon:'⬛' },
+  { id:'skills', label:'Skills Dashboard', icon:'◈' },
+  { id:'resume', label:'Resume Viewer', icon:'☰' },
+  { id:'ai', label:'Launch AI Assistant', icon:'◎' },
+  { id:'contact', label:'Contact', icon:'✉' },
+  { id:'github', label:'GitHub Dashboard', icon:'⌬' },
+  { id:'settings', label:'Settings', icon:'⚙' },
 ]
 
 export function ContextMenu({ x, y, onClose, onAppOpen }: Props) {
@@ -27,14 +27,13 @@ export function ContextMenu({ x, y, onClose, onAppOpen }: Props) {
         top:y,
         left:x,
         zIndex:1100,
-        minWidth:'220px',
-        padding:'8px',
-        borderRadius:'12px',
-        background:'rgba(5,10,20,0.92)',
-        backdropFilter:'blur(24px)',
-        border:'1px solid rgba(0,255,247,0.16)',
-        boxShadow:'0 18px 40px rgba(0,0,0,0.45), 0 0 30px rgba(0,255,247,0.08)',
-        fontFamily:"'JetBrains Mono',monospace",
+        minWidth:'200px',
+        padding:'6px',
+        borderRadius:'4px',
+        background:'#2a2a2a',
+        border:'1px solid #444',
+        boxShadow:'0 8px 16px rgba(0,0,0,0.8)',
+        fontFamily:"'Liberation Mono',monospace",
       }}
     >
       {MENU_ITEMS.map(item => (
@@ -48,18 +47,21 @@ export function ContextMenu({ x, y, onClose, onAppOpen }: Props) {
             width:'100%',
             display:'flex',
             alignItems:'center',
-            gap:'10px',
-            padding:'10px 12px',
+            gap:'8px',
+            padding:'8px 10px',
             border:'none',
-            borderRadius:'8px',
+            borderRadius:'2px',
             background:'transparent',
-            color:'#d6d6d6',
+            color:'#bbb',
             cursor:'pointer',
             textAlign:'left',
             fontSize:'11px',
+            transition:'background 0.1s',
           }}
+          onMouseEnter={e => (e.currentTarget.style.background = '#404040')}
+          onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
         >
-          <span style={{ color:item.color, fontSize:'13px' }}>{item.icon}</span>
+          <span style={{ color:'#0088ff', fontSize:'12px' }}>{item.icon}</span>
           <span>{item.label}</span>
         </button>
       ))}

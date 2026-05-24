@@ -3,14 +3,11 @@ import type { ComponentType } from 'react'
 import { BootScreen }    from './components/BootScreen'
 import { LoginScreen }   from './components/LoginScreen'
 import { Wallpaper }     from './components/Wallpaper'
-import { MatrixRain }    from './components/MatrixRain'
-import { Particles }     from './components/Particles'
 import { TopBar }        from './components/TopBar'
 import { Dock }          from './components/Dock'
 import { AppWindow }     from './components/AppWindow'
 import { Desktop }       from './components/Desktop'
 import { ContextMenu }   from './components/ContextMenu'
-import { CursorGlow }    from './components/CursorGlow'
 
 import { AboutApp }    from './apps/AboutApp'
 import { ProjectsApp } from './apps/ProjectsApp'
@@ -74,8 +71,6 @@ export default function App() {
       {phase === 'desktop' && (
         <>
           <Wallpaper />
-          <MatrixRain />
-          <Particles />
           <Desktop onOpen={openApp} />
           <TopBar onAppOpen={openApp} activeWs={activeWs} setActiveWs={setActiveWs} />
 
@@ -111,8 +106,7 @@ export default function App() {
             </div>
           )}
 
-          <CursorGlow />
-        </>
+          </>
       )}
     </div>
   )
